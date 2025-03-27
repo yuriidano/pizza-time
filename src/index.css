@@ -1,0 +1,141 @@
+@import "tailwindcss";
+/* {
+  padding: 0;
+  margin: 0;
+  border: 0; } */
+
+/*Обнуление*/
+*
+  
+  *, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box; }
+  
+  :focus, :active {
+    outline: none; }
+  
+  a:focus, a:active {
+    outline: none; }
+  
+  nav, footer, header, aside {
+    display: block; }
+  
+  html, body, #root {
+    height: 100%;
+    width: 100%;
+    font-size: 100%;
+    line-height: 1;
+    font-size: 14px;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%; 
+  }
+    
+  
+  
+  input, button, textarea {
+    font-family: inherit; }
+  
+  input::-ms-clear {
+    display: none; }
+  
+  button {
+    cursor: pointer; }
+  
+  button::-moz-focus-inner {
+    padding: 0;
+    border: 0; }
+  
+  a, a:visited {
+    text-decoration: none; }
+  
+  a:hover {
+    text-decoration: none; }
+  
+  ul li {
+    list-style: none; }
+  
+  img {
+    vertical-align: top; }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-size: inherit;
+    font-weight: 400; }
+  
+  /*--------------------*/
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+
+  font-size: 16px;
+  font-family: 'Arial';
+  color: #6C757D;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#root {
+  height: 100%;
+}
+
+  /*-------------wrapper-----------*/
+  
+  .wrapper {
+    display: flex; 
+    flex-direction: column; 
+    min-height: 100%;
+    overflow: hidden;
+ }
+
+
+/*-------------container-----------*/
+
+.container {
+  max-width: 1535px;
+  margin: 0 auto;
+  padding: 0 15px; 
+  @media (max-width: 1200px){
+    max-width: 970px;
+  }
+  @media (max-width: 992px){
+    max-width: 750px;
+  }
+  @media (max-width:768px){
+    max-width: 450px;	
+  } 
+  @media (max-width:480px){
+    max-width: none;	
+  } 
+
+}
+
+/*-------------@theme-----------*/
+
+@theme {
+  --breakpoint-xl: 75rem;
+  --breakpoint-lg: 62rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-sm: 30rem;
+
+}
+/* 
+max-xl	@media (width < 1200px 75rem)
+max-lg	@media (width < 992px 62rem)
+max-md	@media (width < 768px 48rem)
+max-sm	@media (width < 480px 30rem)
+*/
+
+
+
+
+
