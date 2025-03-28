@@ -38,6 +38,9 @@ body {
     column-gap: 35px;
     row-gap: 55px;
     flex-wrap: wrap;
+    &:not(:last-child) {
+    margin-bottom: 50px;
+    }
   }
   &__item {
     max-width: 280px;
@@ -61,8 +64,6 @@ body {
   padding: 0 48px 0 67px;
   border-radius: 20px;
   &--cart {
-    max-width: 820px;
-    margin: 90px auto;
     .content__title {
       margin: 0;
     }
@@ -139,8 +140,7 @@ body {
       width: 10%;
 
       img {
-        width: 80px;
-        height: 80px;
+        max-width: 100%;
       }
     }
 
@@ -229,7 +229,6 @@ body {
   }
 
   &__bottom {
-    margin: 50px 0;
 
     &-details {
       display: flex;

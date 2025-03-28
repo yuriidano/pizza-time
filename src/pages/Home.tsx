@@ -29,6 +29,7 @@ const Home = () => {
             setItems(data);
             setIsLoading(false);
           });
+          window.scrollTo(0, 0)
       }, [])
 
     return (
@@ -40,8 +41,8 @@ const Home = () => {
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
                 {
-                    isLoading ? [...new Array(6)].map((_, index) => <  PizzaBlockSkeleton key={index} />)
-                        : items.map((pizza) => <div className={'content__item'} key={pizza.id}><PizzaBlock {...pizza} /></div>)
+                    isLoading ? [...new Array(6)].map((_, index) => <PizzaBlockSkeleton key={index} />)
+                              : items.map((pizza) => <div className={'content__item'} key={pizza.id}><PizzaBlock {...pizza} /></div>)
                 }
             </div>
         </>
