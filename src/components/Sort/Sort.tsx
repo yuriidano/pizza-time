@@ -1,18 +1,26 @@
 import { useState } from "react";
+import { SortType } from "../../pages/Home";
+type PropsType = {
+   selectSortType: SortType,
+   setSelectSortType: (obj: SortType) => void
+}
 
+const Sort = ({selectSortType, setSelectSortType}: PropsType) => {
+  const [openPopap, setOpenPopap] = useState(false);
 
+  const sortType = [
+    {name: 'популярности (asc)', nameProperty: 'rating'},
+    {name: 'популярности (desc)', nameProperty: '-rating'},
+    {name: 'цене (asc)', nameProperty: 'price'},
+    {name: 'цене (desc)', nameProperty: '-price'},
+    {name: 'алфавиту (asc)', nameProperty: 'category'},
+    { name: 'алфавиту (desc)', nameProperty: '-category' },
+  ]
 
-const Sort = () => {
-  const [openPopap, setOpenPopap] = useState(false)
-  const typeSort = ['популярности', 'цене', 'алфавиту'];
-  const [select, setSelect] = useState(0);
-  const selectTypeSort = typeSort[select];
-
-  const selectHandler = (index: number) => {
-    setSelect(index);
+  const sortHandlar = (obj: SortType) => {
+    setSelectSortType(obj);
     setOpenPopap(false)
   }
-
 
   return (
     <div className="sort">
@@ -29,13 +37,13 @@ const Sort = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpenPopap(prev => !prev)}>{selectTypeSort}</span>
+        <span onClick={() => setOpenPopap((prev => !prev))}>{selectSortType.name}</span>
       </div>
-      { openPopap &&
+      {
         <div className="sort__popup">
           <ul>
-            {
-             typeSort.map((item, index) => <li key={index} onClick={() => selectHandler(index)} className={index === select ? 'active' : ''} >{typeSort[index]}</li>)
+            {openPopap &&
+              sortType.map((obj, index) => <li className={obj.nameProperty === selectSortType.nameProperty ? 'active' : '' } onClick={() => sortHandlar(obj)} key={index}>{obj.name}</li>)
             }
           </ul>
         </div>

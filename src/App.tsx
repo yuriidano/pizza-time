@@ -5,12 +5,20 @@ import './scss/app.scss';
 import Home from './pages/Home';
 import { NotFound } from './pages/NotFound';
 import { Cart } from './pages/Cart';
+import { useState } from 'react';
+export type PizzaType = {
+  id: number,
+  imageUrl: string,
+  title: string,
+  types: number[],
+  sizes: number[],
+  price: number,
+  category: number,
+  rating: number
+};
+
 
 function App() {
-
-
-
-
 
   return (
     <div className="wrapper">

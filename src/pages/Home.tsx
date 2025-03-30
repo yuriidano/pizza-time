@@ -3,40 +3,44 @@ import Categories from "../components/Categories/Categories";
 import Sort from "../components/Sort/Sort";
 import PizzaBlockSkeleton from "../components/PizzaBlock/PizzaBlockSkeleton";
 import PizzaBlock from "../components/PizzaBlock/PizzaBlock";
+import { itemsAPI } from "../api/api";
+type PizzaType = {
+  id: number,
+  imageUrl: string,
+  title: string,
+  types: number[],
+  sizes: number[],
+  price: number,
+  category: number,
+  rating: number
+};
 
+export type SortType = {name: string, nameProperty: string}
 
 const Home = () => {
-      type PizzaType = {
-        id: number,
-        imageUrl: string,
-        title: string,
-        types: number[],
-        sizes: number[],
-        price: number,
-        category: number,
-        rating: number
-      };
-    
       const [items, setItems] = useState<PizzaType[]>([]);
-      const [isLoading, setIsLoading] = useState(true)
+      const [isLoading, setIsLoading] = useState(true);
+      const [selectSortType, setSelectSortType] = useState({name: 'популярности (asc)', nameProperty: 'rating'});
+      const [selectedCategory, setSelectedCategory] = useState(0);
+
+      const order = selectSortType.nameProperty.includes('-') ? 'desc' : 'asc';
+      const requestSortType = selectSortType.nameProperty.replace('-', '');
+      const requestCategory = selectedCategory !== 0 ? selectedCategory : '';
 
       useEffect(() => {
-        fetch('https://67e4282e2ae442db76d34bc3.mockapi.io/items', {
-          method: 'GET',
-        })
-          .then(res => res.json())
-          .then((data: PizzaType[]) => {
-            setItems(data);
-            setIsLoading(false);
-          });
-          window.scrollTo(0, 0)
-      }, [])
+        itemsAPI.getItems(requestSortType, requestCategory, order)
+          .then(res => {
+            setItems(res);
+            setIsLoading(false)
+          })
+      }, [requestSortType, requestCategory, order])
+
 
     return (
         <>
             <div className="content__top">
-                <Categories />
-                <Sort />
+                <Categories selectedCategory={selectedCategory} setSelectedCategory={(index: number) => setSelectedCategory(index)} />
+                <Sort selectSortType={selectSortType} setSelectSortType={(obj: SortType) => setSelectSortType(obj)}/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">

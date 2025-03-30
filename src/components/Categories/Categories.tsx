@@ -1,19 +1,22 @@
-import { useState } from "react";
 
-const Categories = () => {
-  const [active, setActive] = useState(0)
+type PropsType = {
+  selectedCategory: number,
+  setSelectedCategory: (index: number) => void
+}
 
-  const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
+const Categories = ({setSelectedCategory, selectedCategory}: PropsType) => {
+  const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 
   return (
     <div className="categories">
       <ul>
           {
-            categories.map((categorie, index) => <li onClick={() => setActive(index)} className={active === index ? "active" : ''} key={index}>{categorie}</li>)
+            categories.map((categori, index) => <li className={index === selectedCategory ? 'active' : ''} onClick={() => setSelectedCategory(index)} 
+            key={index}>{categories[index]}</li>)
           }
       </ul>
     </div>
-  );
+  ); 
 };
 
 export default Categories;
