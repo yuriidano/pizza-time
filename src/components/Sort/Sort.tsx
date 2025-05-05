@@ -1,29 +1,49 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SortType } from "../../pages/Home";
-type PropsType = {
-   selectSortType: SortType,
-   setSelectSortType: (obj: SortType) => void
-}
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { setSelectedSortType } from "../../redux/filterSlice";
 
-const Sort = ({selectSortType, setSelectSortType}: PropsType) => {
+
+export const sortType = [
+  {name: 'популярности (asc)', nameProperty: 'rating'},
+  {name: 'популярности (desc)', nameProperty: '-rating'},
+  {name: 'цене (asc)', nameProperty: 'price'},
+  {name: 'цене (desc)', nameProperty: '-price'},
+  {name: 'алфавиту (asc)', nameProperty: 'category'},
+  {name: 'алфавиту (desc)', nameProperty: '-category'},
+]
+
+const Sort = () => {
+  const dispatch = useDispatch();
+  const selectedSortType = useSelector((state: RootState) => state.filterReducer.selectedSortType);
   const [openPopap, setOpenPopap] = useState(false);
 
-  const sortType = [
-    {name: 'популярности (asc)', nameProperty: 'rating'},
-    {name: 'популярности (desc)', nameProperty: '-rating'},
-    {name: 'цене (asc)', nameProperty: 'price'},
-    {name: 'цене (desc)', nameProperty: '-price'},
-    {name: 'алфавиту (asc)', nameProperty: 'category'},
-    { name: 'алфавиту (desc)', nameProperty: '-category' },
-  ]
 
-  const sortHandlar = (obj: SortType) => {
-    setSelectSortType(obj);
-    setOpenPopap(false)
+  const selectedSortTypeHandler = (obj: SortType) => {
+    setOpenPopap(false);
+    dispatch(setSelectedSortType(obj))
   }
+ 
+  const popapRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const openPopapHandler = (e: MouseEvent) => {
+      if(popapRef.current && !popapRef.current.contains(e.target as Node)) {
+        setOpenPopap(false)
+      } 
+    }
+
+    document.body.addEventListener('click', openPopapHandler);
+
+
+    return () => {
+      document.body.removeEventListener('click', openPopapHandler);
+    }
+
+  })
 
   return (
-    <div className="sort">
+    <div ref={popapRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
@@ -37,14 +57,15 @@ const Sort = ({selectSortType, setSelectSortType}: PropsType) => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpenPopap((prev => !prev))}>{selectSortType.name}</span>
+        <span onClick={() => setOpenPopap(prev => !prev)}>{selectedSortType.name}</span>
       </div>
-      {
+      { openPopap &&
         <div className="sort__popup">
           <ul>
-            {openPopap &&
-              sortType.map((obj, index) => <li className={obj.nameProperty === selectSortType.nameProperty ? 'active' : '' } onClick={() => sortHandlar(obj)} key={index}>{obj.name}</li>)
-            }
+              {
+                sortType.map((obj, index) => <li onClick={() => selectedSortTypeHandler(obj)} 
+                className={obj.nameProperty === selectedSortType.nameProperty ? 'active' : ''} key={index}>{obj.name}</li>)
+              }
           </ul>
         </div>
       }

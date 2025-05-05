@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem } from "../../redux/cartSlice";
+import { RootState } from "../../redux/store";
 
 type PropsType = {
   id: number,
@@ -12,9 +15,27 @@ type PropsType = {
 };
 
 const PizzaBlock = ({title, price, sizes, types, id}: PropsType) => {
+  const dispatch = useDispatch();
+  const itemsCart = useSelector((state: RootState) => state.cartReducer.items);
+  const itemFind = itemsCart.find(item => item.id === id);
+ 
   const typeNames = ['тонкое' , 'традиційне'];
   const [activeType, setActiveType] = useState(0);
   const [activeTSize, setActiveSize] = useState(0);
+
+
+  const addCartItemHandler = () => {
+    const newCartItem = {
+      id,
+      title,
+      types: typeNames[activeType],
+      sizes: sizes[activeTSize],
+      price,
+      count: 1
+  }
+
+    dispatch(addItem(newCartItem))
+  }
 
   return (
     <div className="pizza-block">
@@ -36,7 +57,7 @@ const PizzaBlock = ({title, price, sizes, types, id}: PropsType) => {
           }
         </ul>
       </div>
-      <div className="pizza-block__bottom">
+      <div onClick={addCartItemHandler} className="pizza-block__bottom">
         <div className="pizza-block__price">от {price} $</div>
         <div className="button button--outline button--add">
           <svg
@@ -51,7 +72,9 @@ const PizzaBlock = ({title, price, sizes, types, id}: PropsType) => {
             />
           </svg>
           <span>Добавить</span>
-          <i>2</i>
+          {itemFind?.count &&
+            <i>{itemFind?.count}</i>
+          }
         </div>
       </div>
     </div>

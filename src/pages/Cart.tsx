@@ -1,11 +1,24 @@
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { PizzaCart } from '../components/PizzaCart';
+import { clierCart } from '../redux/cartSlice';
+import { CartEmpty } from './CartEmpty';
+
 
 
 export const Cart = () => {
+  const dispatch = useDispatch();
+  const itemsCart = useSelector((state: RootState) => state.cartReducer.items);
+  const totalPrice = useSelector((state: RootState) => state.cartReducer.totalPrice);
+  const itemsCount = itemsCart.reduce((sum, item) => item.count + sum, 0);
 
 
+  const resetCartHandler = () => {
+    dispatch(clierCart())
+  }
+
+  if(!itemsCart.length) return <CartEmpty />
 
   return (
     <div className="container container--cart">
@@ -39,7 +52,7 @@ export const Cart = () => {
             </svg>
             Корзина
           </h2>
-          <div className="cart__clear">
+          <div onClick={resetCartHandler} className="cart__clear">
             <svg
               width="20"
               height="20"
@@ -76,103 +89,20 @@ export const Cart = () => {
           </div>
         </div>
         <div className="content__items">
-          <div className="cart__item">
-            <div className="cart__item-img">
-              <img className="pizza-block__image" src="https://react-pizza-v2-psi.vercel.app/assets/img/products/15.png" alt="Pizza"/>
-            </div>
-            <div className="cart__item-info">
-              <h3>Сырный цыпленок</h3>
-              <p>тонкое тесто, 26 см.</p>
-            </div>
-            <div className="cart__item-count">
-              <div className="border border-me-orange cursor-pointer w-8 h-8 rounded-4xl hover:bg-me-orange transition-colors duration-300
-                    flex justify-center items-center ">
-                <div className='text-me-orange hover:text-white transition-colors duration-300'><RemoveIcon /></div>
-              </div>
-              <b>2</b>
-              <div className="border border-me-orange cursor-pointer w-8 h-8 rounded-4xl hover:bg-me-orange transition-colors duration-300
-                     flex justify-center items-center ">
-                <div className='text-me-orange hover:text-white transition-colors duration-300'><AddIcon /></div>
-              </div>
-            </div>
-            <div className="cart__item-price">
-              <b>770 ₽</b>
-            </div>
-            <div className="cart__item-remove">
-            <div className="border border-gray-400 cursor-pointer w-8 h-8 rounded-4xl hover:bg-gray-400 transition-colors duration-300
-                     flex justify-center items-center ">
-                <div className=''><AddIcon /></div>
-              </div>
-            </div>
-          </div>
-          <div className="cart__item">
-            <div className="cart__item-img">
-              <img className="pizza-block__image" src="https://react-pizza-v2-psi.vercel.app/assets/img/products/15.png" alt="Pizza"/>
-            </div>
-            <div className="cart__item-info">
-              <h3>Сырный цыпленок</h3>
-              <p>тонкое тесто, 26 см.</p>
-            </div>
-            <div className="cart__item-count">
-              <div className="border border-me-orange cursor-pointer w-8 h-8 rounded-4xl hover:bg-me-orange transition-colors duration-300
-                    flex justify-center items-center ">
-                <div className='text-me-orange hover:text-white transition-colors duration-300'><RemoveIcon /></div>
-              </div>
-              <b>2</b>
-              <div className="border border-me-orange cursor-pointer w-8 h-8 rounded-4xl hover:bg-me-orange transition-colors duration-300
-                     flex justify-center items-center ">
-                <div className='text-me-orange hover:text-white transition-colors duration-300'><AddIcon /></div>
-              </div>
-            </div>
-            <div className="cart__item-price">
-              <b>770 ₽</b>
-            </div>
-            <div className="cart__item-remove">
-            <div className="border border-gray-400 cursor-pointer w-8 h-8 rounded-4xl hover:bg-gray-400 transition-colors duration-300
-                     flex justify-center items-center ">
-                <div className=''><AddIcon /></div>
-              </div>
-            </div>
-          </div>
-          <div className="cart__item">
-            <div className="cart__item-img">
-              <img className="pizza-block__image" src="https://react-pizza-v2-psi.vercel.app/assets/img/products/15.png" alt="Pizza"/>
-            </div>
-            <div className="cart__item-info">
-              <h3>Сырный цыпленок</h3>
-              <p>тонкое тесто, 26 см.</p>
-            </div>
-            <div className="cart__item-count">
-              <div className="border border-me-orange cursor-pointer w-8 h-8 rounded-4xl hover:bg-me-orange transition-colors duration-300
-                    flex justify-center items-center ">
-                <div className='text-me-orange hover:text-white transition-colors duration-300'><RemoveIcon /></div>
-              </div>
-              <b>2</b>
-              <div className="border border-me-orange cursor-pointer w-8 h-8 rounded-4xl hover:bg-me-orange transition-colors duration-300
-                     flex justify-center items-center ">
-                <div className='text-me-orange hover:text-white transition-colors duration-300'><AddIcon /></div>
-              </div>
-            </div>
-            <div className="cart__item-price">
-              <b>770 ₽</b>
-            </div>
-            <div className="cart__item-remove">
-            <div className="border border-gray-400 cursor-pointer w-8 h-8 rounded-4xl hover:bg-gray-400 transition-colors duration-300
-                     flex justify-center items-center ">
-                <div className=''><AddIcon /></div>
-              </div>
-            </div>
-          </div>
+          {
+            itemsCart.map(item => <PizzaCart {...item} />)
+          }
+
         </div>
         <div className="cart__bottom">
           <div className="cart__bottom-details">
             <span>
               {' '}
-              Всего пицц: <b>2 шт.</b>{' '}
+              Всего пицц: <b>{itemsCount} шт.</b>{' '}
             </span>
             <span>
               {' '}
-              Сумма заказа: <b>123 ₽</b>{' '}
+              Сумма заказа: <b>{totalPrice} ₽</b>{' '}
             </span>
           </div>
           <div className="cart__bottom-buttons">

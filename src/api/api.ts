@@ -18,10 +18,13 @@ const instance = axios.create({
 
 
 
+
 export const itemsAPI = {
-    getItems(sortBy: string = 'rating', category: number | string, order: string) {
+
+    getItems(sortBy: string = 'rating', category: number | string, order: string, search: string = '', page: number, limit: number) {
+        const searchQuery = search ? `&search=${search}` : '';
         return (
-            instance.get<ResponseType>(`items?sortBy=${sortBy}&category=${category}&order=${order}`)
+            instance.get<ResponseType>(`items?sortBy=${sortBy}&category=${category}&order=${order}${searchQuery}&page=${page}&limit=${limit}`)
                 .then(res => res.data)
         )
     }
